@@ -1,13 +1,14 @@
 /*
- * readonlymemvfs - a basic spatialite vfs for accessing an in-memory read-only database
+ * w32xreadonlymemvfs - a spatialite vfs for accessing an in-memory read-only database with extensions for win32.
  *
  * By Alex Paterson, copyright 2012. http://www.tolon.co.uk
- * Based on spmemvfs by Stephen Liu, copyright 2009. http://code.google.com/p/sphivedb/
+ * Uses readonlymemvfs, which is based on spmemvfs by Stephen Liu, copyright 2009. http://code.google.com/p/sphivedb/
  *
  * This code and its use is governed by the GNU GPLv2 licence as published by the Free Software Foundation.
  *
  */
 
+#include "w32xreadonlymemvfs.h"
 #include "readonlymemvfs.h"
 #include <sqlite3.h>
 #include <string.h>

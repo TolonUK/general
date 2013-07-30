@@ -1,13 +1,14 @@
 /*
- * readonlymemvfs - a basic spatialite vfs for accessing an in-memory read-only database
+ * w32xreadonlymemvfs - a spatialite vfs for accessing an in-memory read-only database with extensions for win32.
  *
  * By Alex Paterson, copyright 2012. http://www.tolon.co.uk
- * Based on spmemvfs by Stephen Liu, copyright 2009. http://code.google.com/p/sphivedb/
+ * Uses readonlymemvfs, which is based on spmemvfs by Stephen Liu, copyright 2009. http://code.google.com/p/sphivedb/
  *
  * This code and its use is governed by the GNU GPLv2 licence as published by the Free Software Foundation.
  *
  */
 
+#include "w32xreadonlymemvfs.h"
 #include "readonlymemvfs.h"
 #include <sqlite3.h>
 #include <string.h>
@@ -167,17 +168,17 @@ struct spmemvfs_t {
 	sqlite3_vfs * parent;
 };
 
-static int spmemvfsOpen( sqlite3_vfs * vfs, const char * path, sqlite3_file * file, int flags, int * outflags );
-static int spmemvfsDelete( sqlite3_vfs * vfs, const char * path, int syncDir );
-static int spmemvfsAccess( sqlite3_vfs * vfs, const char * path, int flags, int * result );
-static int spmemvfsFullPathname( sqlite3_vfs * vfs, const char * path, int len, char * fullpath );
-static void * spmemvfsDlOpen( sqlite3_vfs * vfs, const char * path );
-static void spmemvfsDlError( sqlite3_vfs * vfs, int len, char * errmsg );
-static void ( * spmemvfsDlSym ( sqlite3_vfs * vfs, void * handle, const char * symbol ) ) ( void );
-static void spmemvfsDlClose( sqlite3_vfs * vfs, void * handle );
-static int spmemvfsRandomness( sqlite3_vfs * vfs, int len, char * buffer );
-static int spmemvfsSleep( sqlite3_vfs * vfs, int microseconds );
-static int spmemvfsCurrentTime( sqlite3_vfs * vfs, double * result );
+static int basevfsOpen( sqlite3_vfs * vfs, const char * path, sqlite3_file * file, int flags, int * outflags );
+static int basevfsDelete( sqlite3_vfs * vfs, const char * path, int syncDir );
+static int basevfsAccess( sqlite3_vfs * vfs, const char * path, int flags, int * result );
+static int basevfsFullPathname( sqlite3_vfs * vfs, const char * path, int len, char * fullpath );
+static void * basevfsDlOpen( sqlite3_vfs * vfs, const char * path );
+static void basevfsDlError( sqlite3_vfs * vfs, int len, char * errmsg );
+static void ( * basevfsDlSym ( sqlite3_vfs * vfs, void * handle, const char * symbol ) ) ( void );
+static void basevfsDlClose( sqlite3_vfs * vfs, void * handle );
+static int basevfsRandomness( sqlite3_vfs * vfs, int len, char * buffer );
+static int basevfsSleep( sqlite3_vfs * vfs, int microseconds );
+static int basevfsCurrentTime( sqlite3_vfs * vfs, double * result );
 
 static spmemvfs_t g_spmemvfs = {
 	{
