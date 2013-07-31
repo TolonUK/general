@@ -9,14 +9,26 @@
 #if !defined(SIMPLE_CPP_LEXER_HPP)
 #define SIMPLE_CPP_LEXER_HPP
 
+#include <boost/version.hpp>
+
+#if BOOST_VERSION >= 104700
+#include <boost/spirit/include/classic_core.hpp>
+#include <boost/spirit/include/classic_symbols.hpp>
+#include <boost/spirit/include/classic_chset.hpp>
+#include <boost/spirit/include/classic_escape_char.hpp>
+#include <boost/spirit/include/classic_confix.hpp>
+namespace simple_cpp_lexer_spirit = boost::spirit::classic;
+namespace boost { namespace spirit { namespace classic {
+#else
 #include <boost/spirit/core.hpp>
 #include <boost/spirit/symbols/symbols.hpp>
 #include <boost/spirit/utility/chset.hpp>
 #include <boost/spirit/utility/escape_char.hpp>
 #include <boost/spirit/utility/confix.hpp>
+namespace simple_cpp_lexer_spirit = boost::spirit::repository;
+namespace boost { namespace spirit { namespace repository {
+#endif
 
-namespace boost { namespace spirit { namespace repository
-{
     // simple_cpp_lexer, as its name suggests, is a very simple lexer that
     // recognises c++ lexical entities such as keywords, identifiers,
     // preprocessor directives, etc., and calls user supplied semantic actions
@@ -129,6 +141,6 @@ namespace boost { namespace spirit { namespace repository
         Actions& actions;
     };
 
-}}} // namespace boost::spirit::repository
+}}} // namespace boost::spirit::repository|classic
 
 #endif // SIMPLE_CPP_LEXER_HPP
